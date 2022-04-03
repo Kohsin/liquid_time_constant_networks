@@ -192,7 +192,7 @@ if __name__ == "__main__":
     parser.add_argument('--model',default="lstm")
     parser.add_argument('--log',default=1,type=int)
     parser.add_argument('--size',default=32,type=int)
-    parser.add_argument('--epochs',default=200,type=int)
+    parser.add_argument('--epochs',default=1,type=int)
     args = parser.parse_args()
 
 
