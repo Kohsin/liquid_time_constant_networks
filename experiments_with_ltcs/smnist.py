@@ -68,7 +68,7 @@ class SMnistModel:
         if(model_type == "lstm"):
             self.fused_cell = tf.nn.rnn_cell.LSTMCell(model_size)
 
-            head,_ = tf.nn.dynamic_rnn(self.fused_cell,head,dtype=tf.float32,time_major=True)
+            head,_ = tf.compat.v1.nn.rnn_cell.BasicRNNCell(self.fused_cell,head,dtype=tf.float32,time_major=True)
         elif(model_type.startswith("ltc")):
             learning_rate = 0.005 # LTC needs a higher learning rate
             self.wm = ltc.LTCCell(model_size)
