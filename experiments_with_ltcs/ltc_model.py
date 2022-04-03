@@ -239,6 +239,7 @@ class LTCCell(tf.compat.v1.nn.rnn_cell.BasicRNNCell):
     
     def _sigmoid(self,v_pre,mu,sigma):
         v_pre = tf.reshape(v_pre,[-1,v_pre.shape[-1],1])
+        print("v_pre_sigmoid.shape", v_pre_sigmoid.shape)
         mues = v_pre - mu
         x = sigma*mues
         return tf.nn.sigmoid(x)
