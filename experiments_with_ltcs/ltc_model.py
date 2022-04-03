@@ -150,6 +150,9 @@ class LTCCell(tf.compat.v1.nn.rnn_cell.BasicRNNCell):
         v_pre = state
         print("v_pre.shape", v_pre.shape)
         print("inputs.shape", inputs.shape)
+        
+        a = self._sigmoid(inputs,self.sensory_mu,self.sensory_sigma)
+        print("a.shape", a.shape)
         sensory_w_activation = self.sensory_W*self._sigmoid(inputs,self.sensory_mu,self.sensory_sigma)
         sensory_rev_activation = sensory_w_activation*self.sensory_erev
         
