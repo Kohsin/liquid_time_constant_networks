@@ -16,7 +16,7 @@ class ODESolver(Enum):
     Explicit = 1
     RungeKutta = 2
 
-class LTCCell(tf.nn.rnn_cell.RNNCell):
+class LTCCell(tf.compat.v1.nn.rnn_cell.BasicRNNCell):
 
     def __init__(self, num_units):
 
