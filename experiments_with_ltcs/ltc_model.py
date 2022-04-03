@@ -148,6 +148,7 @@ class LTCCell(tf.compat.v1.nn.rnn_cell.BasicRNNCell):
     # Hybrid euler method
     def _ode_step(self,inputs,state):
         v_pre = state
+        print("v_pre.shape", v_pre.shape())
 
         sensory_w_activation = self.sensory_W*self._sigmoid(inputs,self.sensory_mu,self.sensory_sigma)
         sensory_rev_activation = sensory_w_activation*self.sensory_erev
@@ -167,7 +168,8 @@ class LTCCell(tf.compat.v1.nn.rnn_cell.BasicRNNCell):
             denominator = self.cm_t + self.gleak + w_denominator
 
             v_pre = numerator/denominator
-
+            
+        print("v_pre2.shape", v_pre.shape())
         return v_pre
 
     def _f_prime(self,inputs,state):
