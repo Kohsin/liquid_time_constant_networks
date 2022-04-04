@@ -161,7 +161,10 @@ class LTCCell(tf.compat.v1.nn.rnn_cell.BasicRNNCell):
         
         w_numerator_sensory = tf.reduce_sum(sensory_rev_activation,axis=1)
         w_denominator_sensory = tf.reduce_sum(sensory_w_activation,axis=1)
-
+        
+        print("w_numerator_sensory.shape", w_numerator_sensory.shape)
+        print("w_denominator_sensory.shape", w_denominator_sensory.shape)
+        
         for t in range(self._ode_solver_unfolds):
             w_activation = self.W*self._sigmoid(v_pre,self.mu,self.sigma)
 
