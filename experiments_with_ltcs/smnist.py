@@ -3,10 +3,9 @@ import pandas as pd
 import os
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'  # Run on CPU
 
-import tensorflow.compat.v1 as tf
-
-tf.disable_v2_behavior()
+import tensorflow as tf
 import ltc_model as ltc
+from ctrnn_model import CTRNN, NODE, CTGRU
 import argparse
 import pandas as pd
 
@@ -14,21 +13,21 @@ import pandas as pd
 class SMnistData:
 
     def __init__(self):
-        #(train_x, train_y), (test_x, test_y) = tf.keras.datasets.cifar10.load_data()
         (train_x, train_y), (test_x, test_y) = tf.keras.datasets.mnist.load_data()
+
         train_x = train_x.astype(np.float32)/255.0
         test_x = test_x.astype(np.float32)/255.0
-        print("train_x.shape",train_x.shape)
+
         train_split = int(0.9*train_x.shape[0])
         valid_x = train_x[train_split:]
         train_x = train_x[:train_split]
         valid_y = train_y[train_split:]
         train_y = train_y[:train_split]
-        print("train_x2.shape",train_x.shape)
+
         train_x = train_x.reshape([-1,28,28])
         test_x = test_x.reshape([-1,28,28])
         valid_x = valid_x.reshape([-1,28,28])
-        print("train_x3.shape",train_x.shape)
+
 
         self.valid_x = np.transpose(valid_x,(1,0,2))
         self.train_x = np.transpose(train_x,(1,0,2))
@@ -67,7 +66,7 @@ class SMnistModel:
         if(model_type == "lstm"):
             self.fused_cell = tf.nn.rnn_cell.LSTMCell(model_size)
 
-            head,_ = tf.compat.v1.nn.rnn_cell.BasicRNNCell(self.fused_cell,head,dtype=tf.float32)
+            head,_ = tf.nn.dynamic_rnn(self.fused_cell,head,dtype=tf.float32,time_major=True)
         elif(model_type.startswith("ltc")):
             learning_rate = 0.005 # LTC needs a higher learning rate
             self.wm = ltc.LTCCell(model_size)
@@ -78,17 +77,17 @@ class SMnistModel:
             else:
                 self.wm._solver = ltc.ODESolver.SemiImplicit
 
-            head,_ = tf.nn.dynamic_rnn(self.wm,head,dtype=tf.float32)
+            head,_ = tf.nn.dynamic_rnn(self.wm,head,dtype=tf.float32,time_major=True)
             self.constrain_op = self.wm.get_param_constrain_op()
         elif(model_type == "node"):
             self.fused_cell = NODE(model_size,cell_clip=-1)
-            head,_ = tf.nn.dynamic_rnn(self.fused_cell,head,dtype=tf.float32)
+            head,_ = tf.nn.dynamic_rnn(self.fused_cell,head,dtype=tf.float32,time_major=True)
         elif(model_type == "ctgru"):
             self.fused_cell = CTGRU(model_size,cell_clip=-1)
-            head,_ = tf.nn.dynamic_rnn(self.fused_cell,head,dtype=tf.float32)
+            head,_ = tf.nn.dynamic_rnn(self.fused_cell,head,dtype=tf.float32,time_major=True)
         elif(model_type == "ctrnn"):
             self.fused_cell = CTRNN(model_size,cell_clip=-1,global_feedback=True)
-            head,_ = tf.nn.dynamic_rnn(self.fused_cell,head,dtype=tf.float32)
+            head,_ = tf.nn.dynamic_rnn(self.fused_cell,head,dtype=tf.float32,time_major=True)
         else:
             raise ValueError("Unknown model type '{}'".format(model_type))
         
@@ -192,7 +191,7 @@ if __name__ == "__main__":
     parser.add_argument('--model',default="lstm")
     parser.add_argument('--log',default=1,type=int)
     parser.add_argument('--size',default=32,type=int)
-    parser.add_argument('--epochs',default=1,type=int)
+    parser.add_argument('--epochs',default=200,type=int)
     args = parser.parse_args()
 
 
@@ -200,4 +199,3 @@ if __name__ == "__main__":
     model = SMnistModel(model_type = args.model,model_size=args.size)
 
     model.fit(occ_data,epochs=args.epochs,log_period=args.log)
-
