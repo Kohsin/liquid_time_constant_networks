@@ -17,7 +17,7 @@ class SMnistData:
 
         train_x = train_x.astype(np.float32)/255.0
         test_x = test_x.astype(np.float32)/255.0
-
+        print("train_x.shape",train_x.shape)
         train_split = int(0.9*train_x.shape[0])
         valid_x = train_x[train_split:]
         train_x = train_x[:train_split]
@@ -27,7 +27,7 @@ class SMnistData:
         train_x = train_x.reshape([-1,28,28])
         test_x = test_x.reshape([-1,28,28])
         valid_x = valid_x.reshape([-1,28,28])
-
+        print("train_x2.shape",train_x.shape)
 
         self.valid_x = np.transpose(valid_x,(1,0,2))
         self.train_x = np.transpose(train_x,(1,0,2))
