@@ -17,17 +17,17 @@ class SMnistData:
 
         train_x = train_x.astype(np.float32)/255.0
         test_x = test_x.astype(np.float32)/255.0
-
+        print("tarin_x.shpae",train_x.shape)
         train_split = int(0.9*train_x.shape[0])
         valid_x = train_x[train_split:]
         train_x = train_x[:train_split]
         valid_y = train_y[train_split:]
         train_y = train_y[:train_split]
-
+        print("tarin_x2.shpae",train_x.shape)
         train_x = train_x.reshape([-1,28,28])
         test_x = test_x.reshape([-1,28,28])
         valid_x = valid_x.reshape([-1,28,28])
-
+        print("tarin_x3.shpae",train_x.shape)
 
         self.valid_x = np.transpose(valid_x,(1,0,2))
         self.train_x = np.transpose(train_x,(1,0,2))
