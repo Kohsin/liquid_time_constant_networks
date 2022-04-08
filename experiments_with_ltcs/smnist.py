@@ -5,7 +5,7 @@ os.environ['CUDA_VISIBLE_DEVICES'] = '-1'  # Run on CPU
 
 import tensorflow as tf
 import ltc_model as ltc
-from ctrnn_model import CTRNN, NODE, CTGRU
+#from ctrnn_model import CTRNN, NODE, CTGRU
 import argparse
 import pandas as pd
 
