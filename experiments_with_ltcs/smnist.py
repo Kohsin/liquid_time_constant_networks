@@ -67,7 +67,7 @@ class SMnistModel:
         if(model_type == "lstm"):
             self.fused_cell = tf.nn.rnn_cell.LSTMCell(model_size)
 
-            head,_ = tf.compat.v1.nn.rnn_cell.BasicRNNCell(self.fused_cell,head,dtype=tf.float32,time_major=True)
+            head,_ = tf.compat.v1.nn.rnn_cell.BasicRNNCell(self.fused_cell,head,dtype=tf.float32)
         elif(model_type.startswith("ltc")):
             learning_rate = 0.005 # LTC needs a higher learning rate
             self.wm = ltc.LTCCell(model_size)
@@ -78,17 +78,17 @@ class SMnistModel:
             else:
                 self.wm._solver = ltc.ODESolver.SemiImplicit
 
-            head,_ = tf.nn.dynamic_rnn(self.wm,head,dtype=tf.float32,time_major=True)
+            head,_ = tf.nn.dynamic_rnn(self.wm,head,dtype=tf.float32)
             self.constrain_op = self.wm.get_param_constrain_op()
         elif(model_type == "node"):
             self.fused_cell = NODE(model_size,cell_clip=-1)
-            head,_ = tf.nn.dynamic_rnn(self.fused_cell,head,dtype=tf.float32,time_major=True)
+            head,_ = tf.nn.dynamic_rnn(self.fused_cell,head,dtype=tf.float32)
         elif(model_type == "ctgru"):
             self.fused_cell = CTGRU(model_size,cell_clip=-1)
-            head,_ = tf.nn.dynamic_rnn(self.fused_cell,head,dtype=tf.float32,time_major=True)
+            head,_ = tf.nn.dynamic_rnn(self.fused_cell,head,dtype=tf.float32)
         elif(model_type == "ctrnn"):
             self.fused_cell = CTRNN(model_size,cell_clip=-1,global_feedback=True)
-            head,_ = tf.nn.dynamic_rnn(self.fused_cell,head,dtype=tf.float32,time_major=True)
+            head,_ = tf.nn.dynamic_rnn(self.fused_cell,head,dtype=tf.float32)
         else:
             raise ValueError("Unknown model type '{}'".format(model_type))
         
