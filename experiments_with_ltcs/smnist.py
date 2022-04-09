@@ -35,7 +35,7 @@ class SMnistData:
         self.valid_y = valid_y
         self.train_y = train_y
         self.test_y = test_y
-
+        print("train_x3.shape",train_x.shape)
         print("Total number of training sequences: {}".format(train_x.shape[0]))
         print("Total number of validation sequences: {}".format(self.valid_x.shape[0]))
         print("Total number of test sequences: {}".format(self.test_x.shape[0]))
