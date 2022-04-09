@@ -104,7 +104,7 @@ class LTCCell(tf.compat.v1.nn.rnn_cell.BasicRNNCell):
                 next_state = self._ode_step_runge_kutta(inputs,state)
             else:
                 raise ValueError("Unknown ODE solver '{}'".format(str(self._solver)))
-
+            print("inputs, state", inputs.shape, state.shape)
             outputs = next_state
             
         return outputs, next_state 
@@ -147,48 +147,30 @@ class LTCCell(tf.compat.v1.nn.rnn_cell.BasicRNNCell):
 
     # Hybrid euler method
     def _ode_step(self,inputs,state):
-        print("↓——————————————————————————————————————————————————————————————————↓")
+
         v_pre = state
-        print("v_pre.shape", v_pre.shape)
-        print("inputs.shape", inputs.shape)
+
         
         a = self._sigmoid(inputs,self.sensory_mu,self.sensory_sigma)
-        print("a.shape", a.shape)
-        print("self.sensory_W.shape", self.sensory_W.shape)
         sensory_w_activation = self.sensory_W*self._sigmoid(inputs,self.sensory_mu,self.sensory_sigma)
         sensory_rev_activation = sensory_w_activation*self.sensory_erev
         
-        print("sensory_w_activation.shape", sensory_w_activation.shape)
-        print("sensory_rev_activation.shape", sensory_rev_activation.shape)
-        
+
         w_numerator_sensory = tf.reduce_sum(sensory_rev_activation,axis=1)
         w_denominator_sensory = tf.reduce_sum(sensory_w_activation,axis=1)
-        
-        print("w_numerator_sensory.shape", w_numerator_sensory.shape)
-        print("w_denominator_sensory.shape", w_denominator_sensory.shape)
+
         
         for t in range(self._ode_solver_unfolds):
             w_activation = self.W*self._sigmoid(v_pre,self.mu,self.sigma)
-            print("in for w_activation.shape", w_activation.shape)
-            print("self.W.shape", self.W.shape)
             rev_activation = w_activation*self.erev
-            print("in for rev_activation.shape", rev_activation.shape)
 
             w_numerator = tf.reduce_sum(rev_activation,axis=1) + w_numerator_sensory
             w_denominator = tf.reduce_sum(w_activation,axis=1) + w_denominator_sensory
             
             numerator = self.cm_t * v_pre + self.gleak*self.vleak + w_numerator
             denominator = self.cm_t + self.gleak + w_denominator
-            print("in for self.cm_t.shape", self.cm_t.shape)
-            print("in for self.gleak.shape", self.gleak.shape)
-            print("in for self.vleak.shape", self.vleak.shape)
-            print("in for numerator.shape", numerator.shape)
-            print("in for denominator.shape", denominator.shape)
             
             v_pre = numerator/denominator
-            
-        print("v_pre2.shape", v_pre.shape)
-        print("↑——————————————————————————————————————————————————————————————↑")
         return v_pre
 
     def _f_prime(self,inputs,state):
