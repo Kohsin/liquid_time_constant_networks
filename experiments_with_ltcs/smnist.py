@@ -23,7 +23,7 @@ class SMnistData:
         train_x = train_x[:train_split]
         valid_y = train_y[train_split:]
         train_y = train_y[:train_split]
-
+        print("train_x1.shape",train_x.shape)
         train_x = train_x.reshape([-1,28,28])
         test_x = test_x.reshape([-1,28,28])
         valid_x = valid_x.reshape([-1,28,28])
