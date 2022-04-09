@@ -13,7 +13,7 @@ import pandas as pd
 class SMnistData:
 
     def __init__(self):
-        #(train_x, train_y), (test_x, test_y) = tf.keras.datasets.mnist.load_data()
+        (train_x, train_y), (test_x, test_y) = tf.keras.datasets.mnist.load_data()
         #(train_x, train_y), (test_x, test_y) = tf.keras.datasets.cifar10.load_data()
         train_x = train_x.astype(np.float32)/255.0
         test_x = test_x.astype(np.float32)/255.0
