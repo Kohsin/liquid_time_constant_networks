@@ -59,8 +59,9 @@ class SMnistModel:
         self.model_type = model_type
         self.constrain_op = None
         self.x = tf.placeholder(dtype=tf.float32,shape=[28,None,28])
+        print("self.x   " ,self.x.shape)
         self.target_y = tf.placeholder(dtype=tf.int32,shape=[None])
-
+        print("self.target_y   " ,self.target_y.shape)
         self.model_size = model_size
         head = self.x
         if(model_type == "lstm"):
