@@ -79,6 +79,7 @@ class SMnistModel:
                 self.wm._solver = ltc.ODESolver.SemiImplicit
 
             head,_ = tf.nn.dynamic_rnn(self.wm,head,dtype=tf.float32,time_major=True)
+            print("head.shape",head.shape)
             self.constrain_op = self.wm.get_param_constrain_op()
         elif(model_type == "node"):
             self.fused_cell = NODE(model_size,cell_clip=-1)
