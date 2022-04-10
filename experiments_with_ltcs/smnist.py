@@ -15,8 +15,8 @@ class SMnistData:
     def __init__(self):
         #(train_x, train_y), (test_x, test_y) = tf.keras.datasets.mnist.load_data()
         (train_x, train_y), (test_x, test_y) = tf.keras.datasets.cifar10.load_data()
-        #train_x = train_x.astype(np.float32)/255.0
-        #test_x = test_x.astype(np.float32)/255.0
+        train_x = train_x.astype(np.float32)/255.0
+        test_x = test_x.astype(np.float32)/255.0
         #print("train_x.shape",train_x.shape)
         print("test_y.shape",test_y.shape)
         train_split = int(0.9*train_x.shape[0])
@@ -25,9 +25,9 @@ class SMnistData:
         valid_y = train_y[train_split:]
         train_y = train_y[:train_split]
         print("train_x1.shape",train_x.shape)
-        train_x = train_x.reshape([-1,32*32,3])
-        test_x = test_x.reshape([-1,32*32,3])
-        valid_x = valid_x.reshape([-1,32*32,3])
+        train_x = train_x.reshape([-1,3,32*32])
+        test_x = test_x.reshape([-1,3,32*32])
+        valid_x = valid_x.reshape([-1,3,32*32])
         print("train_x2.shape",train_x.shape)
         print("test_x.shape",test_x.shape)
         self.valid_x = np.transpose(valid_x,(1,0,2))
@@ -59,7 +59,7 @@ class SMnistModel:
     def __init__(self,model_type,model_size,learning_rate = 0.001):
         self.model_type = model_type
         self.constrain_op = None
-        self.x = tf.placeholder(dtype=tf.float32,shape=[32*32,None,3])
+        self.x = tf.placeholder(dtype=tf.float32,shape=[-1,3,32*32])
         print("self.x   " ,self.x.shape)
         self.target_y = tf.placeholder(dtype=tf.int32,shape=[None,1])
         print("self.target_y   " ,self.target_y.shape)
