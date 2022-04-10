@@ -15,9 +15,9 @@ class SMnistData:
     def __init__(self):
         #(train_x, train_y), (test_x, test_y) = tf.keras.datasets.mnist.load_data()
         (train_x, train_y), (test_x, test_y) = tf.keras.datasets.cifar10.load_data()
-        train_x = train_x.astype(np.float32)/255.0
-        test_x = test_x.astype(np.float32)/255.0
-        print("train_x.shape",train_x.shape)
+        #train_x = train_x.astype(np.float32)/255.0
+        #test_x = test_x.astype(np.float32)/255.0
+        #print("train_x.shape",train_x.shape)
         print("test_y.shape",test_y.shape)
         train_split = int(0.9*train_x.shape[0])
         valid_x = train_x[train_split:]
@@ -61,7 +61,7 @@ class SMnistModel:
         self.constrain_op = None
         self.x = tf.placeholder(dtype=tf.float32,shape=[32,None,96])
         print("self.x   " ,self.x.shape)
-        self.target_y = tf.placeholder(dtype=tf.int32,shape=[None,10])
+        self.target_y = tf.placeholder(dtype=tf.int32,shape=[None,1])
         print("self.target_y   " ,self.target_y.shape)
         self.model_size = model_size
         head = self.x
