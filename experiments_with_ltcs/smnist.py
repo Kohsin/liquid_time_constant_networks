@@ -28,14 +28,14 @@ class SMnistData:
         test_x = test_x.reshape([-1,96,32])
         valid_x = valid_x.reshape([-1,96,32])
         print("train_x2.shape",train_x.shape)
-
+        print("test_x.shape",test_x.shape)
         self.valid_x = np.transpose(valid_x,(1,0,2))
         self.train_x = np.transpose(train_x,(1,0,2))
         self.test_x = np.transpose(test_x,(1,0,2))
         self.valid_y = valid_y
         self.train_y = train_y
         self.test_y = test_y
-        print("train_x3.shape",train_x.shape)
+        print("test_y.shape",test_y.shape)
         print("Total number of training sequences: {}".format(train_x.shape[0]))
         print("Total number of validation sequences: {}".format(self.valid_x.shape[0]))
         print("Total number of test sequences: {}".format(self.test_x.shape[0]))
