@@ -85,7 +85,7 @@ class LTCCell(tf.compat.v1.nn.rnn_cell.BasicRNNCell):
                 # TODO: Move this part into the build method inherited form tf.Layers
                 self._is_built = True
                 self._input_size = int(inputs.shape[-1])
-
+                print(" self._num_units",self._num_units)
                 self._get_variables()
 
             elif(self._input_size != int(inputs.shape[-1])):
