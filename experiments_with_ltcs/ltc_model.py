@@ -233,15 +233,10 @@ class LTCCell(tf.compat.v1.nn.rnn_cell.BasicRNNCell):
         return v_pre
     
     def _sigmoid(self,v_pre,mu,sigma):
-        print("v_pre_in_sigmoid.shape", v_pre.shape)
         v_pre = tf.reshape(v_pre,[-1,v_pre.shape[-1],1])
-        print("v_pre_sigmoid.shape", v_pre.shape)
-        print("mu.shape", mu.shape)
-        print("sigma.shape", sigma.shape)
+
         mues = v_pre - mu
         x = sigma*mues
-        print("mues.shape", mues.shape)
-        print("x.shape", x.shape)
         return tf.nn.sigmoid(x)
 
     def get_param_constrain_op(self):
