@@ -28,7 +28,7 @@ class SMnistData:
         train_x = train_x.reshape([-1,28,28])
         test_x = test_x.reshape([-1,28,28])
         valid_x = valid_x.reshape([-1,28,28])
-        print("test_x.shape",test_x.shape
+        print("test_x.shape",test_x.shape)
 
         self.valid_x = np.transpose(valid_x,(1,0,2))
         self.train_x = np.transpose(train_x,(1,0,2))
