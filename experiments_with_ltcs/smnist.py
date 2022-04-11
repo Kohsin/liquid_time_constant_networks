@@ -64,7 +64,7 @@ class SMnistModel:
     def __init__(self,model_type,model_size,learning_rate = 0.001):
         self.model_type = model_type
         self.constrain_op = None
-        self.x = tf.placeholder(dtype=tf.float32,shape=[3,None,32*3])
+        self.x = tf.placeholder(dtype=tf.float32,shape=[32,None,32*3])
         print("self.x   " ,self.x.shape)
         self.target_y = tf.placeholder(dtype=tf.int32,shape=[None,1])
         print("self.target_y   " ,self.target_y.shape)
